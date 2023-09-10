@@ -8,11 +8,11 @@
 
 
 ## 1.  Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step :card_index_dividers:
-###**- Membuat sebuah proyek Django baru.** 
+### **- Membuat sebuah proyek Django baru.** 
 
 Pertama, untuk membuat proyek Django baru, saya membuat repositori lokal bernama MyWardrobe di laptop saya. Lalu, saya membuat _virtual environment_ pada direktori tersebut untuk mengatur _package_ dan _dependancies_. Kemudian, saya memasang _dependencies_ yang diperlukan dalam requirements.txt dalam _virtual environment_. Lalu, saya membuat proyek Django dengan cara memasukkan 'django-admin startproject MyWardrobe .' pada terminal. Terakhir, saya mengkonfigurasi dan mengaktifkan server.
 
-**- Membuat aplikasi dengan nama main pada proyek tersebut.**
+### **- Membuat aplikasi dengan nama main pada proyek tersebut.**
 Untuk membuat aplikasi main, saya memasukkan perintah 'python manage.py startapp main' ke terminal. Lalu, saya menambahkan **"main"** ke settings agar terdaftar ke proyek.
 
 **- Melakukan routing pada proyek agar dapat menjalankan aplikasi main.**
