@@ -2,6 +2,8 @@
 
 :sparkles: Nama: Kilau Nisrina Akhyaari 
 
+:label: NPM: 2206082051
+
 :dvd: Kelas: PBP E
 
 :iphone: Nama Aplikasi: :coat::jeans: [My Wardrobe](https://mywardrobe.adaptable.app) :dress::scarf:
@@ -9,43 +11,56 @@
 
 ## 1.  Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step :card_index_dividers:
 ### **- Membuat sebuah proyek Django baru.** 
-
 Pertama, untuk membuat proyek Django baru, saya membuat repositori lokal bernama MyWardrobe di laptop saya. Lalu, saya membuat _virtual environment_ pada direktori tersebut untuk mengatur _package_ dan _dependancies_. Kemudian, saya memasang _dependencies_ yang diperlukan dalam requirements.txt dalam _virtual environment_. Lalu, saya membuat proyek Django dengan cara memasukkan 'django-admin startproject MyWardrobe .' pada terminal. Terakhir, saya mengkonfigurasi dan mengaktifkan server.
 
 ### **- Membuat aplikasi dengan nama main pada proyek tersebut.**
 Untuk membuat aplikasi main, saya memasukkan perintah 'python manage.py startapp main' ke terminal. Lalu, saya menambahkan **"main"** ke settings agar terdaftar ke proyek.
 
-**- Melakukan routing pada proyek agar dapat menjalankan aplikasi main.**
+### **- Melakukan routing pada proyek agar dapat menjalankan aplikasi main.**
 Untuk mengakses aplikasi main melalui web, perlu dilakukan routing URL. Saya mengatur file urls.py yang berada di direktori proyek agar terhubung. Dalam kata lain, mengarahkan url-url yang secara umum terkait dengan seluruh proyek, bukan hanya satu aplikasi. Step ini penting untuk menghubungkan file urls pada aplikasi dan memungkinkan proyek modular dan terpisah antaraplikasi.
 
-**- Membuat model pada aplikasi main dengan nama Item dan memiliki atribut wajib name, amount, description.**
+### **- Membuat model pada aplikasi main dengan nama Item dan memiliki atribut wajib name, amount, description.**
 Pada file models.py saya membuat class Item yang berisi 'name' bertipe CharField, 'amount' bertipe IntegerField, 'description' bertipe TextField, dan 'color' bertipe TextField. Lalu, saya migrasi modelnya untuk memastikan bahwa skema basis data tetap sejalan dengan definisi model-model aplikasi pada proyek dan membantu menjaga konsistensi data dalam aplikasi.
 
-**- Membuat sebuah fungsi pada views.py untuk dikembalikan ke dalam sebuah template HTML yang menampilkan nama aplikasi serta nama dan kelas kamu.**
+### **- Membuat sebuah fungsi pada views.py untuk dikembalikan ke dalam sebuah template HTML yang menampilkan nama aplikasi serta nama dan kelas kamu.**
 Saya menghubungkan view dengan template dengan cara mengintegrasikan komponen MVT. Pada file views.py di main saya membuat fungsi 'show_main' dan menambahkan context app, name, dan class untuk dipakai dalam template.
 Lalu, karena sudah ada context yang berisi dictionary data yang diperlukan, saya mengubah file main.html saya untuk menggunakan variabel yang telah didefinisikan. 
 
-**- Membuat sebuah routing pada urls.py aplikasi main untuk memetakan fungsi yang telah dibuat pada views.py.**
+### **- Membuat sebuah routing pada urls.py aplikasi main untuk memetakan fungsi yang telah dibuat pada views.py.**
 Saya membuat file urls.py dalam direktori main yang berisi komponen penting dalam pengaturan aplikasi Django. Saya mendefinisikan app_name menjadi 'main' dan urlpatterns agar mengarah ke path show_main. Step ini memungkinkan URL proyek terarah ke tampilan yang sesuai dengan fitur-fitur di dalam aplikasi.
 
-**- Melakukan deployment ke Adaptable terhadap aplikasi yang sudah dibuat sehingga nantinya dapat diakses oleh teman-temanmu melalui Internet.**
+### **- Melakukan deployment ke Adaptable terhadap aplikasi yang sudah dibuat sehingga nantinya dapat diakses oleh teman-temanmu melalui Internet.**
 Saya membuat app baru di Adaptable dengan menghubungkannya ke repositori GitHub My-Wardrobe. Saya memilih Python Template App dan PostgreSQL untuk template dan tipe basis data. Lalu, saya memastikan versi python sudah sesuai dengan yang ada di aplikasi dan di bagian start command saya memasukkan 'python manage.py migrate && gunicorn shopping_list.wsgi' ntuk memastikan bahwa struktur basis data sesuai dengan definisi model-model aplikasi. Lalu saya mendeploy aplikasi saya agar aktif dan bisa diaskes di internet.
 
 
 ## 2.  Alur Permintaan dan Respon dalam Aplikasi :arrows_counterclockwise:
-   _Request_
-       ↓
-   _URLs_
-       ↓
-   _Views_ ↔ _Models_ ↔ _Database_
-       ↓
-   _Template_
-       ↓
-   _Response_
-       ↓
-   _Client_
+  
+_Request_
 
-   **Penjelasan:** 
+   ↓
+   
+_URLs_
+
+   ↓ 
+   
+_Views_ ↔ _Models_ ↔ _Database_
+
+   ↓
+   
+_Template_
+
+   ↓
+   
+_Response_
+
+   ↓
+   
+_Client_
+
+![Alur Permintaan dan Respon dalam Aplikasi Django](Pola_Django.jpg)
+
+   **Penjelasan:** :memo:
+   
    Permintaan HTTP dari klien/user pertama-tama akan mencapai file urls.py. File urls.py mengandung pengaturan untuk mengarahkan URL ke tampilan (views) yang sesuai. Pada tahap ini, Django mencocokkan URL yang diterima dari permintaan dengan pola URL yang telah didefinisikan dalam file urls.py.
 
    Setelah URL cocok dengan pola yang ada dalam berkas urls.py, permintaan akan diteruskan ke tampilan yang sesuai dalam berkas views.py.
