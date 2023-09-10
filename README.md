@@ -68,8 +68,7 @@ Menggunakan virtual environment adalah _best practice_ yang sangat disarankan da
     Kita bisa membuat aplikasi web berbasis Django tanpa menggunakan virtual environment. Namun, sangat dianjurkan menggunakan virtual environment untuk menjaga kebersihan, isolasi, dan manajemen dependensi yang lebih baik dalam pengembangan proyek. Dengan virtual environment, kita bisa memastikan bahwa proyek memiliki lingkungan yang independen dan terisolasi dari proyek-proyek lain.
 
 
-## 4.  Jelaskan apakah itu MVC, MVT, MVVM dan perbedaan dari ketiganya. 
-:floppy_disk:
+## 4.  Jelaskan apakah itu MVC, MVT, MVVM dan perbedaan dari ketiganya. :floppy_disk:
 1. **MVC** atau **Model View Controller** adalah pola arsitektur dalam membuat sebuah aplikasi dengan cara memisahkan kode menjadi tiga bagian yang terdiri dari:
         - _Model_: Kode dalam model biasanya mencerminkan hal-hal di dunia nyata. Kode ini dapat menyimpan draw data, atau akan menentukan komponen penting aplikasi.
         - _View_: Kode view berisi semua fungsi yang berinteraksi langsung dengan user atau user interface. Ini adalah kode yang membuat aplikasi terlihat bagus, dan menentukan cara user melihat dan berinteraksi dengannya.
