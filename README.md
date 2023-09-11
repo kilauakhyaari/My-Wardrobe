@@ -6,7 +6,7 @@
 
 :dvd: Kelas: PBP E
 
-:iphone: Nama Aplikasi: :coat::jeans: [My Wardrobe](https://mywardrobe.adaptable.app) :dress::scarf:
+:iphone: Nama Aplikasi: :coat::jeans: [My Wardrobe](https://mywardrobe.adaptable.app/main/) :dress::scarf:
 
 
 ## 1.  Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step :card_index_dividers:
