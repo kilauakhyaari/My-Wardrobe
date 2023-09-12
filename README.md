@@ -11,19 +11,19 @@
 
 ## 1.  Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step :card_index_dividers:
 ### **- Membuat sebuah proyek Django baru.** 
-Pertama, untuk membuat proyek Django baru, saya membuat repositori lokal bernama MyWardrobe di laptop saya. Lalu, saya membuat _virtual environment_ pada direktori tersebut untuk mengatur _package_ dan _dependancies_. Kemudian, saya memasang _dependencies_ yang diperlukan dalam requirements.txt dalam _virtual environment_. Lalu, saya membuat proyek Django dengan cara memasukkan 'django-admin startproject MyWardrobe .' pada terminal. Terakhir, saya mengkonfigurasi dan mengaktifkan server.
+Pertama, untuk membuat proyek Django baru, saya membuat repositori lokal bernama MyWardrobe di laptop saya. Lalu, saya membuat _virtual environment_ pada direktori tersebut untuk mengatur _package_ dan _dependancies_. Kemudian, saya memasang _dependencies_ yang diperlukan dalam requirements.txt dalam _virtual environment_. Lalu, saya membuat proyek Django dengan cara memasukkan ' django-admin startproject MyWardrobe . ' pada terminal. Terakhir, saya mengkonfigurasi dan mengaktifkan server.
 
 ### **- Membuat aplikasi dengan nama main pada proyek tersebut.**
-Untuk membuat aplikasi main, saya memasukkan perintah 'python manage.py startapp main' ke terminal. Lalu, saya menambahkan **"main"** ke settings agar terdaftar ke proyek.
+Untuk membuat aplikasi main, saya memasukkan perintah ' python manage.py startapp main ' ke terminal. Lalu, saya menambahkan **"main"** ke settings agar terdaftar ke proyek.
 
 ### **- Melakukan routing pada proyek agar dapat menjalankan aplikasi main.**
 Untuk mengakses aplikasi main melalui web, perlu dilakukan routing URL. Saya mengatur file urls.py yang berada di direktori proyek agar terhubung. Dalam kata lain, mengarahkan url-url yang secara umum terkait dengan seluruh proyek, bukan hanya satu aplikasi. Step ini penting untuk menghubungkan file urls pada aplikasi dan memungkinkan proyek modular dan terpisah antaraplikasi.
 
 ### **- Membuat model pada aplikasi main dengan nama Item dan memiliki atribut wajib name, amount, description.**
-Pada file models.py saya membuat class Item yang berisi 'name' bertipe CharField, 'amount' bertipe IntegerField, 'description' bertipe TextField, dan 'color' bertipe TextField. Lalu, saya migrasi modelnya untuk memastikan bahwa skema basis data tetap sejalan dengan definisi model-model aplikasi pada proyek dan membantu menjaga konsistensi data dalam aplikasi.
+Pada file models.py saya membuat class Item yang berisi 'name' bertipe CharField, ' amount ' bertipe IntegerField, ' description ' bertipe TextField, dan ' color ' bertipe TextField. Lalu, saya migrasi modelnya untuk memastikan bahwa skema basis data tetap sejalan dengan definisi model-model aplikasi pada proyek dan membantu menjaga konsistensi data dalam aplikasi.
 
 ### **- Membuat sebuah fungsi pada views.py untuk dikembalikan ke dalam sebuah template HTML yang menampilkan nama aplikasi serta nama dan kelas kamu.**
-Saya menghubungkan view dengan template dengan cara mengintegrasikan komponen MVT. Pada file views.py di main saya membuat fungsi 'show_main' dan menambahkan context app, name, dan class untuk dipakai dalam template.
+Saya menghubungkan view dengan template dengan cara mengintegrasikan komponen MVT. Pada file views.py di main saya membuat fungsi ' show_main ' dan menambahkan context app, name, dan class untuk dipakai dalam template.
 Lalu, karena sudah ada context yang berisi dictionary data yang diperlukan, saya mengubah file main.html saya untuk menggunakan variabel yang telah didefinisikan. 
 
 ### **- Membuat sebuah routing pada urls.py aplikasi main untuk memetakan fungsi yang telah dibuat pada views.py.**
