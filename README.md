@@ -121,3 +121,125 @@ Menggunakan virtual environment adalah _best practice_ yang sangat disarankan da
 Setiap pola arsitektur memiliki tujuan yang sama, yaitu memisahkan komponen-komponen utama dalam pengembangan perangkat lunak untuk membuat kode lebih terstruktur, mudah dipelihara, dan memungkinkan perubahan tanpa mengganggu bagian lain dari aplikasi.
 
 :full_moon_with_face:
+
+
+# Tugas :three:
+
+
+## 1. Membuat input form untuk menambahkan objek model pada app sebelumnya.
+Untuk membuat form, agar aplikasi saya bisa digunakan untuk menginput Item berikut adalah step-stepnya:
+* Membuat file `forms.py` di direktori main
+Isi file tersebut adalah import ModelForm dari django.forms dan import Product dari main.models.
+Lalu, saya membuat class ProductForm yang menerima parameter ModelForm, di dalamnya terdapat class Meta dengan `fields = "name", "amount", "description", dan "in laundry"`.
+* Menambahkan import di file `views.py` yang berada di folder main.
+Saya menambahkan import HttpResponseRedirect, ProductForm, dan reverse.
+* Membuat fungsi `create_product` di dalam file `views.py` tersebut.
+  Fungsi ini bertujuan agar bisa membuat formulir yang dapat menambahkan data produk ke dalam database secara otomatis ketika pengguna mengirimkan data melalui formulir.
+* Mengubah fungsi `show_main` untuk mengambil semua object Product yang ada di database
+  Caranya dengan menambahkan `'products': products` di dalam variable `context`.
+* Mengimport fungsi `create_product` ke file `urls.py` di dalam folder main.
+  Saya menambahkan import `create_product` dari `main.views`.
+* Menambahkan path url yang sesuai
+  Saya membuat path baru
+  ```python
+  path('create-product', create_product, name='create_product'),
+  ```
+* Membuat file HTML baru bernama `create_product.html` pada direktori main dalam folder templates.
+  Saya membuat tabel untuk menunjukkan data yang tersimpan di database.
+* Menambahkan kode di file `main.html` untuk menampilkan data product yang telah di input
+  Untuk melakukan hal tersebut, saya menambahkan kode:
+  ```html
+  <table>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Date Added</th>
+    </tr>
+
+    {% for product in products %}
+        <tr>
+            <td>{{product.name}}</td>
+            <td>{{product.price}}</td>
+            <td>{{product.description}}</td>
+            <td>{{product.date_added}}</td>
+        </tr>
+    {% endfor %}
+  </table>
+  ```
+Lalu, saya membuaat button untuk menambahkan product dan diarahkan ke url create_product.
+```html
+<a href="{% url 'main:create_product' %}">
+    <button>
+        Add New Product
+    </button>
+</a>
+```
+
+## 2. Menambahkan fungsi `views` untuk melihat objek yang sudah ditambahkan dalam format HTML, XML, JSON, XML by ID, dan JSON by ID.
+Saya menambahkan kode berikut dalam file `views.py` yang berada di main.
+```python
+def show_main(request):
+    items = Product.objects.all()
+
+    context = {
+        'items': items
+    }
+
+    return render(request, "main.html", context)
+
+def show_xml(request):
+    data = Product.objects.all()
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json(request):
+    data = Product.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def show_xml_by_id(request, id):
+    data = Product.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json_by_id(request, id):
+    data = Product.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+```
+Dengan lima fungsi views ini, kita dapat melihat objek yang sudah ditambahkan dalam format HTML, XML, JSON, XML by ID, dan JSON by ID di aplikasi Django `MyWardrobe`.
+
+## 3. Membuat routing URL untuk masing-masing views yang telah ditambahkan pada poin 2.
+Routing URL memungkinkan aplikasi untuk menghubungkan URL tertentu dengan view yang sesuai. Ketika user mengakses URL tertentu, Django akan menggunakan routing URL untuk menentukan view yang harus dipanggil.
+Pada file `urls.py` pada direktori main, saya menambahkan kode berikut:
+```python
+urlpatterns = [
+    path('', show_main, name='show_main'),
+    path('xml/', show_xml, name='show_xml'), 
+    path('json/', show_json, name='show_json'),
+    path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
+    path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
+]
+```
+
+## Pertanyaan
+### 1. Apa perbedaan antara form POST dan form GET dalam Django?
+**GET** biasanya digunakan untuk operasi yang aman dan _read-only_ di mana data dapat terlihat di URL dan dibagikan dengan mudah. GET menggabungkan data yang dikirimkan ke dalam string, lalu menggunakannya untuk membuat URL yang berisi alamat tujuan pengiriman data, serta _key_ dan _value_ data.
+**POST** digunakan untuk operasi yang mengubah status server atau melibatkan data sensitif dan di mana data tidak boleh diekspos di URL. POST memiliki perlindungan CSRF Django yang memungkinkan kontrol lebih terhadap akses.
+
+Post cocok digunakan untuk login form, karena biasanya untuk login perlu password. Password adalah hal yang sensitif, sehingga seharusnya tidak ditampilkan dalam url.
+Sedangkan GET cocok untuk _web search form_, karena URL yang terkait dengan permintaan GET dapat dengan mudah di-_bookmark_, di-_share_, atau digunakan kembali.
+
+### 2. Apa perbedaan utama antara XML, JSON, dan HTML dalam konteks pengiriman data?
+
+* **HTML (HyperText Markup Language)**
+**HTML** adalah dasar pengembangan web dan digunakan untuk menentukan struktur halaman. HTML digunakan untuk menjelaskan bagaimana data ditampilkan. HTML digunakan browser web untuk menafsirkan dan menyusun teks, gambar, dan materi lainnya ke dalam halaman web yang _visible_ atau _audible_.
+
+* **JSON (JavaScript Object Notation)**
+**JSON** digunakan untuk menyimpan dan mengirimkan data. JSON adalah cara untuk merepresentasikan objek. JSON adalah format pertukaran data yang berbasis teks dan terdiri dari pasangan _key-value_. File JSON lebih mudah dibaca daripada XML, karena lebih ringkas. 
+
+* **XML (eXtensible Markup Language)**
+**XML** digunakan untuk merepresentasikan data dengan cara yang dapat dibaca mesin. XML adalah bahasa markup yang fleksibel dan memungkinkan definisi struktur data yang kompleks. XML menggunakan struktur _tag_ untuk mewakili item data.
+
+### 3. Mengapa JSON sering digunakan dalam pertukaran data antara aplikasi web modern?
+JSON umumnya digunakan untuk _serialization_ dan mengirimkan data melalui koneksi jaringan seperti internet. Penggunaan JSON terutama untuk mengirimkan data antara server dan aplikasi web. JSON mendapatkan momentum dalam _API code programming_ dan layanan web karena membantu pertukaran data dan hasil layanan web yang cepat. JSON berbasis teks, ringan, dan memiliki format data yang _easy to parse_ sehingga tidak memerlukan kode tambahan untuk _parsing_/penguraian.
+
+## POSTMAN
+
