@@ -1,24 +1,64 @@
+{% extends 'base.html' %}
+
 <!DOCTYPE html>
+
 <html>
     <head>
         <title>
             My Wardrobe
         </title>
-        <link rel="stylesheet" type="text/css" href="main_style.css">
         <link rel="icon" href="main/logoMyWardrobe.png" type="image/x-icon">
     </head>
 
+    {% block content %}
     <body>
-        <h1>{{ app }}</h1>
-        <p>This will be an app that manages the clothes in {{app}}</p>
+        <h1 style=  "font-family: Verdana;
+                    color:#A53860;
+                    text-align: center;">
+            {{ app }}</h1>
+        <p style=   "font-family: Verdana; 
+                    color:#60435F">
+            This will be an app that manages the clothes in {{app}}</p>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Description</th>
+        <th>In Laundry?</th>
+    </tr>
+
+    {% for item in items %}
+        <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.price}}</td>
+            <td>{{item.description}}</td>
+            <td>{{item.in_laundry}}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<br />
+
+<a href="{% url 'main:create_product' %}">
+    <button style="font-family: Verdana;">
+        Add New Item
+    </button>
+</a>
+
     </body>
     
-    <footer>
-        <h5>
+    <footer style=  "background-color: #C0C0C0;
+                    position: absolute;
+                    bottom: 0; 
+                    width: 100%;
+                    padding: 10px;">
+        <h5 style="font-family: Verdana; color:#4A7C59;">
             Made by:
         </h5>
-        <p style="color:#CAE7B9;">
+        <p style="font-family: Verdana;color:#CAE7B9;">
             {{ name }} from {{ class }}
         </p>
     </footer>
+    {% endblock content %}
 </html>
