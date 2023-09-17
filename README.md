@@ -126,7 +126,7 @@ Setiap pola arsitektur memiliki tujuan yang sama, yaitu memisahkan komponen-komp
 # Tugas :three:
 
 
-## 1. Membuat input form untuk menambahkan objek model pada app sebelumnya.
+## 1. Membuat input form untuk menambahkan objek model pada app sebelumnya. 
 Untuk membuat form, agar aplikasi saya bisa digunakan untuk menginput Item berikut adalah step-stepnya:
 * Membuat file `forms.py` di direktori main
 Isi file tersebut adalah import ModelForm dari django.forms dan import Product dari main.models.
@@ -219,7 +219,7 @@ urlpatterns = [
 ]
 ```
 
-## Pertanyaan
+## Pertanyaan :grey_question:
 ### 1. Apa perbedaan antara form POST dan form GET dalam Django?
 **GET** biasanya digunakan untuk operasi yang aman dan _read-only_ di mana data dapat terlihat di URL dan dibagikan dengan mudah. GET menggabungkan data yang dikirimkan ke dalam string, lalu menggunakannya untuk membuat URL yang berisi alamat tujuan pengiriman data, serta _key_ dan _value_ data.
 **POST** digunakan untuk operasi yang mengubah status server atau melibatkan data sensitif dan di mana data tidak boleh diekspos di URL. POST memiliki perlindungan CSRF Django yang memungkinkan kontrol lebih terhadap akses.
@@ -241,5 +241,20 @@ Sedangkan GET cocok untuk _web search form_, karena URL yang terkait dengan perm
 ### 3. Mengapa JSON sering digunakan dalam pertukaran data antara aplikasi web modern?
 JSON umumnya digunakan untuk _serialization_ dan mengirimkan data melalui koneksi jaringan seperti internet. Penggunaan JSON terutama untuk mengirimkan data antara server dan aplikasi web. JSON mendapatkan momentum dalam _API code programming_ dan layanan web karena membantu pertukaran data dan hasil layanan web yang cepat. JSON berbasis teks, ringan, dan memiliki format data yang _easy to parse_ sehingga tidak memerlukan kode tambahan untuk _parsing_/penguraian.
 
-## POSTMAN
+## POSTMAN :postbox:
+**Postman Screenshot for HTML (main)**
+![Postman HTML](PostmanSS/Postman_JSON_ID.png)
 
+**Postman Screenshot for XML**
+![Postman XML](PostmanSS/Postman_XML.png)
+
+**Postman Screenshot for XML by ID**
+![Postman XML by ID](PostmanSS/Postman_XML_ID.png)
+
+**Postman Screenshot for JSON**
+![Postman XML](PostmanSS/Postman_JSON.png)
+
+**Postman Screenshot for JSON by ID**
+![Postman JSON by ID](PostmanSS/Postman_JSON_ID.png)
+
+:new_moon_with_face:
