@@ -20,31 +20,31 @@
                     color:#60435F">
             This will be an app that manages the clothes in {{app}}</p>
 
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Amount</th>
-        <th>Description</th>
-        <th>In Laundry?</th>
-    </tr>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>In Laundry?</th>
+            </tr>
 
-    {% for item in items %}
-        <tr>
-            <td>{{item.name}}</td>
-            <td>{{item.price}}</td>
-            <td>{{item.description}}</td>
-            <td>{{item.in_laundry}}</td>
-        </tr>
-    {% endfor %}
-</table>
+            {% for item in items %}
+                <tr>
+                    <td>{{item.name}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.description}}</td>
+                    <td>{{item.in_laundry}}</td>
+                </tr>
+            {% endfor %}
+        </table>
 
-<br />
+        <br/>
 
-<a href="{% url 'main:create_product' %}">
-    <button style="font-family: Verdana;">
-        Add New Item
-    </button>
-</a>
+        <a href="{% url 'main:create_product' %}">
+            <button style="font-family: Verdana;">
+                Add New Item
+            </button>
+        </a>
 
     </body>
     
