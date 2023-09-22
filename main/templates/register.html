@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Register</title>
+{% endblock meta %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Verdana, sans-serif;
+        background-color: #DAB6C4;
+        color: #B284BE;
+        text-align: center;
+        margin: 20px; /* Added margin for spacing */
+    }
+
+    .login {
+        font-family: Verdana, sans-serif;
+        color: #FFFFFF;
+        margin: 0 auto;
+        max-width: 400px;
+        padding: 20px;
+        background-color: #60435F;
+        border-radius: 10px;
+    }
+
+    h1 {
+        font-family: Verdana, sans-serif;
+        color: #DAB6C4;
+    }
+
+    form {
+        font-family: Verdana, sans-serif;
+        color: #FFF0F5;
+        margin: 0 auto;
+        max-width: 400px;
+    }
+
+    /* Custom styling for input fields */
+    input[type="text"],
+    input[type="password"] {
+        font-family: Verdana, sans-serif;
+        width: 85%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #CAE7B9;
+        color: #A53860;
+        outline: none; /* Remove the default focus outline */
+    }
+    
+    input[type="submit"] {
+        font-family: Verdana, sans-serif;
+        background-color: #60435F;
+        color: #CAE7B9;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #A53860;
+        color: #DAB6C4;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    ul li {
+        color: #FFFFFF;
+        padding: 5px 0;
+    }
+</style>
+
+<div class="login">
+    <h1>Register</h1>
+
+    <form method="POST" >
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td><input type="submit" name="submit" value="Register" /></td>
+            </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+{% endblock content %}

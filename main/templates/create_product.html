@@ -1,17 +1,101 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
 {% block content %}
-<h1>Add New Item</h1>
+<style>
+    body {
+        font-family: Verdana, sans-serif;
+        background-color: #A53860;
+        color: #DAB6C4;
+        text-align: center;
+        margin: 20px; /* Added margin for spacing */
+    }
+
+    h1 {
+        font-family: Verdana, sans-serif;
+        color: #DAB6C4;
+    }
+
+    form {
+        font-family: Verdana, sans-serif;
+        font-weight: bold;
+        color: #60435F;
+        margin: 0 auto;
+        max-width: 400px;
+        padding: 20px;
+        background-color: #DAB6C4;
+        border-radius: 10px;
+    }
+
+    input[type="submit"] {
+        font-family: Verdana, sans-serif;
+        background-color: #DAB6C4;
+        color: #60435F;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #60435F;
+        color: #FFF0F5;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse; /* Added for better spacing */
+    }
+
+    td {
+        padding: 15px; /* Increased padding for spacing */
+    }
+
+    /* Custom styles for all input fields */
+    input[type="text"],
+    input[type="number"],
+    textarea {
+        font-family: Verdana, sans-serif;
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 2px solid #4A7C59;
+        border-radius: 5px;
+        background-color: #CAE7B9;
+        color: #60435F;
+        outline: none; /* Remove the default focus outline */
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    textarea:focus {
+        border-color: #4A7C59; 
+    }
+</style>
+
+<h1>Add New Item of Clothing</h1>
 
 <form method="POST">
     {% csrf_token %}
     <table>
-        {{ form.as_table }}
+        <tr>
+            <td><label for="id_name">Name:</label></td>
+            <td><input type="text" name="name" id="id_name" required></td>
+        </tr>
+        <tr>
+            <td><label for="id_amount">Amount:</label></td>
+            <td><input type="number" name="amount" id="id_amount" required></td>
+        </tr>
+        <tr>
+            <td><label for="id_description">Description:</label></td>
+            <td><textarea name="description" id="id_description" required></textarea></td>
+        </tr>
+        <tr>
+            <td><label for="id_in_laundry">In Laundry?</label></td>
+            <td><input type="checkbox" name="in_laundry" id="id_in_laundry"></td>
+        </tr>
         <tr>
             <td></td>
-            <td>
-                <input type="submit" value="Add Product"/>
-            </td>
+            <td><input type="submit" value="Add Item" /></td>
         </tr>
     </table>
 </form>

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Login</title>
+{% endblock meta %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Verdana, sans-serif;
+        background-color: #CAE7B9;
+        color: #60435F;
+        text-align: center;
+        margin: 20px; /* Added margin for spacing */
+    }
+
+    .login {
+        font-family: Verdana, sans-serif;
+        color: #FAE6FA;
+        margin: 0 auto;
+        max-width: 400px;
+        padding: 20px;
+        background-color: #4A7C59;
+        border-radius: 10px;
+    }
+
+    h1 {
+        font-family: Verdana, sans-serif;
+        color: #CAE7B9;
+    }
+
+    .form-control {
+        font-family: Verdana, sans-serif;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #DAB6C4;
+        color: #60435F;
+    }
+
+    .login_btn {
+        font-family: Verdana, sans-serif;
+        background-color: #4A7C59;
+        color: #CAE7B9;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .login_btn:hover {
+        background-color: #A53860;
+        color: #DAB6C4;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    ul li {
+        color: #A53860;
+        padding: 5px 0;
+    }
+</style>
+
+<div class="login">
+    <h1>Login</h1>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Username: </td>
+                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+            </tr>
+                    
+            <tr>
+                <td>Password: </td>
+                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><input class="btn login_btn" type="submit" value="Login"></td>
+            </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    Don't have an account yet? <a href="{% url 'main:register' %}" style="color: #DAB6C4;">Register Now</a>
+</div>
+
+{% endblock content %}
