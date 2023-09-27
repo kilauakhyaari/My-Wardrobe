@@ -409,3 +409,65 @@ Django menggunakan _cookie_ yang berisi id sesi unik untuk mengidentifikasi seti
 Secara default, _cookie_ tidak berbahaya dalam pengembangan web. Namun, jika data cookie diakses orang yang mempunyai niat jahat seperti _cyberattacker_,mereka bisa mengakses sesi _search_, mencuri informasi pribadi, atau menyalahgunakan data cookie pengguna. 
 Suatu website mungkin saja menjual data dari cookie ke pihak ketiga atau bisa saja menggunakannya untuk _hack_ akun user.
 Sebaiknya, kita tidak menerima cookie dari situs web yang _unsecure_. Kita juga bisa menolak penggunaan cookie. Sebagian besar website akan berfungsi dengan baik tanpa mengumpulkan informasi pribadi user melalui cookie. 
+
+### Implementasi Bonus
+Menambahkan tombol dan fungsi untuk menambahkan amount suatu objek sebanyak satu dan tombol untuk mengurangi jumlah stok suatu objek sebanyak satu dan tombol fungsi untuk menghapus suatu objek dari inventori.
+
+Saya memodifikasi table saya di main.html menjadi 
+```html
+<table>
+        <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Increase/Decrease</th> 
+            <th>Description</th>
+            <th>In Laundry?</th>
+            <th>Delete</th> 
+        </tr>
+        {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.amount }}</td>
+                <td>
+                    <!-- Increase and Decrease Buttons -->
+                    <a href="{% url 'main:increase_amount' item.id %}">+</a>
+                    <a href="{% url 'main:decrease_amount' item.id %}">-</a>
+                </td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.in_laundry }}</td>
+                <!-- Delete Button -->
+                <td><a href="{% url 'main:delete_item' item.id %}">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+``` 
+
+Lalu, saya menambahkan fungsi untuk melakukan increase/decrease amount dan delete item pada `views.py` saya di direktori main. Saya mengimport `get_object_or_404` dari django.shortcuts. 
+
+```python
+def increase_amount(request, item_id):
+    item = get_object_or_404(Item, pk=item_id, user=request.user)
+    item.amount += 1
+    item.save()
+    return HttpResponseRedirect(reverse('main:show_main'))
+
+def decrease_amount(request, item_id):
+    item = get_object_or_404(Item, pk=item_id, user=request.user)
+    if item.amount > 0:  
+        item.amount -= 1
+        item.save()
+    return HttpResponseRedirect(reverse('main:show_main'))
+
+def delete_item(request, item_id):
+    item = get_object_or_404(Item, pk=item_id, user=request.user)
+    item.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
+```
+
+Terakhir, saya mengkonfigurasi `urls.py` saya dalam direktori main agar fungsi-fungsi yang sudah saya buat bisa diintegrasikan. Saya mengimport `increase_amount, decrease_amount, delete_item` dari main.views dan menambahkan path-path berikut di dalam urlspatterns.
+
+```python
+    path('increase_amount/<int:item_id>/', increase_amount, name='increase_amount'),
+    path('decrease_amount/<int:item_id>/', decrease_amount, name='decrease_amount'),
+    path('delete_item/<int:item_id>/', delete_item, name='delete_item'),
+```

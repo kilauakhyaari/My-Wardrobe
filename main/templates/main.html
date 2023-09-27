@@ -85,15 +85,24 @@
         <tr>
             <th>Name</th>
             <th>Amount</th>
+            <th>Increase/Decrease</th> 
             <th>Description</th>
             <th>In Laundry?</th>
+            <th>Delete</th> 
         </tr>
         {% for item in items %}
             <tr>
                 <td>{{ item.name }}</td>
                 <td>{{ item.amount }}</td>
+                <td>
+                    <!-- Increase and Decrease Buttons -->
+                    <a href="{% url 'main:increase_amount' item.id %}">+</a>
+                    <a href="{% url 'main:decrease_amount' item.id %}">-</a>
+                </td>
                 <td>{{ item.description }}</td>
                 <td>{{ item.in_laundry }}</td>
+                <!-- Delete Button -->
+                <td><a href="{% url 'main:delete_item' item.id %}">Delete</a></td>
             </tr>
         {% endfor %}
     </table>

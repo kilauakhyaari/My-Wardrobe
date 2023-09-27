@@ -1,5 +1,5 @@
 import datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from main.forms import ProductForm
 from django.urls import reverse
@@ -15,11 +15,13 @@ from django.contrib.auth.decorators import login_required
 def show_main(request):
     items = Item.objects.filter(user=request.user)
 
+    last_login = request.COOKIES.get('last_login', 'Not available')
+
     context = {
         'app': 'My Wardrobe',
         'name': request.user.username,
         'items': items,
-        'last_login': request.COOKIES['last_login'],
+        'last_login': last_login,
     }
 
     return render(request, "main.html", context)
@@ -84,3 +86,21 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def increase_amount(request, item_id):
+    item = get_object_or_404(Item, pk=item_id, user=request.user)
+    item.amount += 1
+    item.save()
+    return HttpResponseRedirect(reverse('main:show_main'))
+
+def decrease_amount(request, item_id):
+    item = get_object_or_404(Item, pk=item_id, user=request.user)
+    if item.amount > 0:  
+        item.amount -= 1
+        item.save()
+    return HttpResponseRedirect(reverse('main:show_main'))
+
+def delete_item(request, item_id):
+    item = get_object_or_404(Item, pk=item_id, user=request.user)
+    item.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
