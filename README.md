@@ -471,3 +471,97 @@ Terakhir, saya mengkonfigurasi `urls.py` saya dalam direktori main agar fungsi-f
     path('decrease_amount/<int:item_id>/', decrease_amount, name='decrease_amount'),
     path('delete_item/<int:item_id>/', delete_item, name='delete_item'),
 ```
+
+# Tugas :five:
+## 1. Jelaskan manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya.
+Element selector CSS digunakan untuk memilih elemen HTML yang ingin diubah _style_-nya.
+### Type/Element Selector
+- Manfaat: Mengaplikasikan _style_ ke semua elemen dengan jenis tertentu.
+- Digunakan ketika: Mengatur gaya default untuk elemen tertentu di seluruh halaman atau website. Misalnya, mengatur semua elemen `<p>` agar berwarna biru.
+```html
+p {
+  color: blue;
+}
+```
+### Class Selector
+- Manfaat: Mengaplikasikan _style_ ke semua elemen yang memiliki kelas tertentu.
+- Digunakan ketika: Mengatur _style_ khusus untuk sekelompok elemen tanpa mengubah elemen lain yang sejenis. Misalnya, beberapa elemen h1 akan berwarna merah hanya di kelas "login", sementara h1 lainnya tetap dengan warna default.
+```html
+.login {
+  color: red;
+}
+```
+### ID Selector
+- Manfaat: Mengaplikasikan _style_ ke elemen yang memiliki ID tertentu.
+- Digunakan ketika: Mengatur _style_ khusus untuk elemen dengan ID tertentu yang unik. Misalnya, mengatur elemen dengan id="test" agar mempunyai font yang bold.
+```html
+#test {
+  font-weight: bold;
+}
+```
+### Universal Selector
+- Manfaat: Mengaplikasikan _style_ ke seluruh elemen di file html.
+- Digunakan ketika: Mengatur _style_ yang akan dipakai di seluruh halaman html. Misalnya, semua font di halaman ingin diatur menjadi Verdana.
+```html
+* {
+  font-family: Verdana;
+}
+```
+### Grouping Selector
+- Manfaat: Menggabungkan beberapa selector untuk menerapkan _style_ yang sama.
+- Digunakan ketika: ingin memberi _style_ yang sama untuk beberapa elemen, agar tidak mengulang kode.
+Misalnya, `<h1>`,`<h2>`, dan `<h3>` ingin menerapkan background color yang sama.
+```html
+h1, h2, h3 {
+  background-color: white;
+}
+```
+### Descendant Selector
+- Manfaat: Mengaplikasikan _style_ berdasarkan hubungan keturunan elemen.
+- Digunakan ketika: Mengatur _style_ untuk elemen yang berada di dalam elemen lain dan merupakan keturunan elemen tersebut. Misalnya, mengubah alignment teks elemen <h2> yang berada di dalam <footer>.
+```html
+footer h2 {
+  text-align: center;
+}
+```
+## 2. Jelaskan HTML5 Tag yang kamu ketahui.
+* `<!DOCTYPE html>` : Mendefinisikan tipe dokumen dan versinya, defaultnya HTML5.
+* `<a>` : Membuat hyperlink/anchor
+* `<body>` : Mendefinisikan elemen "body"
+* `<br>` : Break line, elemen setelahnya akan berada di baris berikutnya
+* `<header>` : Menandakan konten header atau navigasi.
+* `<img>` : Menandakan konten gambar
+* `<link>` : Untuk memberi referensi sumber
+* `<table>` : Menandakan tabel
+* `<th>` : Menandakan header tabel
+* `<td>` : Menandakan data pada tabel
+* `<tr>` : Menandakan row tabel
+
+## 3. Jelaskan perbedaan antara margin dan padding.
+Dalam mendesign menggunakan CSS, margin dan padding adalah bagian dari **box model**.
+
+![Box Model Layout](img/)
+
+**Padding** adalah ruang di antara konten dan border. Padding mendorong konten elemen agar menjauh dari batas elemennya. Padding tidak menyebabkan elemen lain bergeser karena hanya mempengaruhi ruang di dalam batas elemen. Warna padding menyesuaikan background color.
+
+**Margin** adalah ruang di luar border. Margin mendorong elemen lain atau dinding kontainer agar menjauh dari elemen tersebut. Margin bisa menyebabkan elemen lain bergeser, karena margin mempengaruhi ruang di luar elemen. Warna margin selalu transparan.
+
+## 4. Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?
+**Bootstrap** adalah framework berbasis komponen. Bootstrap menyediakan sejumlah komponen desain yang telah jadi, seperti tombol, kartu, navigasi, modals, dan lain-lain, yang dapat digunakan langsung. Kustomisasi di Bootstrap memerlukan usaha yang banyak, karena banyak variabel yang perlu diubah untuk menyesuaikan keinginan.
+
+**Tailwind** adalah framework berbasis utilitas. Tailwind memungkinkan pengembang untuk membuat desain dengan cepat melalui kelas utilitas kecil yang masing-masing mengendalikan satu aspek dari desain (seperti margin, padding, warna, dll). Kustomisasi dalam tailwind lebih mudah karena lebih fleksibel, tidak terikat gaya default dari framework.
+
+:boot: Bootstrap lebih baik digunakan ketika:
+- Menginginkan solusi cepat dengan komponen siap pakai.
+- Pemula dalam design web.
+- Proyek lebih berfokus pada backend, sehingga layout cukup menggunakan yang umum dan langsung bisa digunakan.
+
+:wind_chime: Tailwind lebih baik digunakan ketika:
+- Menginginkan fleksibilitas yang lebih.
+- Ingin design yang unik dan tetap konsisten.
+- Lebih nyaman dengan pendekatan utilitas dan ingin mengurangi jumlah CSS kustom.
+
+
+
+
+
