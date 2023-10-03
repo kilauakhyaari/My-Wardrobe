@@ -1,4 +1,4 @@
-import datetime
+from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from main.forms import ProductForm
@@ -73,8 +73,15 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+
+            # Format current date and time
+            now = timezone.localtime(timezone.now())
+            formatted_date = now.strftime("%B %-d, %Y")
+            formatted_time = now.strftime("%H:%M")
+            last_login_str = f"{formatted_date} at {formatted_time}"
+
             response = HttpResponseRedirect(reverse("main:show_main")) 
-            response.set_cookie('last_login', str(datetime.datetime.now()))
+            response.set_cookie('last_login', last_login_str)
             return response
         else:
             messages.info(request, 'Sorry, incorrect username or password. Please try again.')
@@ -104,3 +111,13 @@ def delete_item(request, item_id):
     item = get_object_or_404(Item, pk=item_id, user=request.user)
     item.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
+
+def edit_item(request, id):
+    item = Item.objects.get(pk = id)
+    form = ProductForm(request.POST or None, instance=item)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+    context = {'form': form}
+    return render(request, "edit_item.html", context)

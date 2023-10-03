@@ -57,7 +57,7 @@ _Response_
    
 _Client_
 
-![Alur Permintaan dan Respon dalam Aplikasi Django](Pola_Django.jpg)
+![Alur Permintaan dan Respon dalam Aplikasi Django](images/Pola_Django.jpg)
 
    **Penjelasan:** :memo:
    
@@ -540,11 +540,11 @@ footer h2 {
 ## 3. Jelaskan perbedaan antara margin dan padding.
 Dalam mendesign menggunakan CSS, margin dan padding adalah bagian dari **box model**.
 
-![Box Model Layout](img/)
+![Box Model Layout](images/Box_Model_Illustration.png)
 
-**Padding** adalah ruang di antara konten dan border. Padding mendorong konten elemen agar menjauh dari batas elemennya. Padding tidak menyebabkan elemen lain bergeser karena hanya mempengaruhi ruang di dalam batas elemen. Warna padding menyesuaikan background color.
+:green_square: **Padding** adalah ruang di antara konten dan border. Padding mendorong konten elemen agar menjauh dari batas elemennya. Padding tidak menyebabkan elemen lain bergeser karena hanya mempengaruhi ruang di dalam batas elemen. Warna padding menyesuaikan background color.
 
-**Margin** adalah ruang di luar border. Margin mendorong elemen lain atau dinding kontainer agar menjauh dari elemen tersebut. Margin bisa menyebabkan elemen lain bergeser, karena margin mempengaruhi ruang di luar elemen. Warna margin selalu transparan.
+:purple_square: **Margin** adalah ruang di luar border. Margin mendorong elemen lain atau dinding kontainer agar menjauh dari elemen tersebut. Margin bisa menyebabkan elemen lain bergeser, karena margin mempengaruhi ruang di luar elemen. Warna margin selalu transparan.
 
 ## 4. Jelaskan perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya kita menggunakan Bootstrap daripada Tailwind, dan sebaliknya?
 **Bootstrap** adalah framework berbasis komponen. Bootstrap menyediakan sejumlah komponen desain yang telah jadi, seperti tombol, kartu, navigasi, modals, dan lain-lain, yang dapat digunakan langsung. Kustomisasi di Bootstrap memerlukan usaha yang banyak, karena banyak variabel yang perlu diubah untuk menyesuaikan keinginan.
@@ -562,6 +562,164 @@ Dalam mendesign menggunakan CSS, margin dan padding adalah bagian dari **box mod
 - Lebih nyaman dengan pendekatan utilitas dan ingin mengurangi jumlah CSS kustom.
 
 
+### Kustomisasi
 
+Saya menambahkan style-style menggunakan CSS dan beberapa komponen bootstrap. Saya mengkustomisasi halaman `create_product`, `add_item`, `login`, `main`, dan juga `register`.
+Dalam `main.html` saya mengkustomisasi dengan menambahkan style berikut. 
+```html
+<style>
+    body {
+        font-family: Verdana, sans-serif;
+        background-color: #DAB6C4;
+        color: #4A7C59;
+        text-align: center;
+        margin: 20px;
+    }
+
+    h1 {
+        font-family: Verdana, sans-serif;
+        color: #A53860;
+        text-align: center;
+    }
+
+    p {
+        font-family: Verdana, sans-serif;
+        color: #60435F;
+    }
+
+    table {
+        font-family: Verdana, sans-serif;
+        color: #60435F;
+        margin: 20px;
+    }
+
+    table th {
+        background-color: #A53860;
+        color: #FFF0F5;
+        font-weight: bold;
+    }
+
+    table th, table td {
+        padding: 10px;
+        border: 1px solid #A53860;
+    }
+
+    tbody tr:last-child {
+        background-color: #F4C2C2;
+    }
+
+    button {
+        font-family: Verdana, sans-serif;
+        background-color: #60435F;
+        color: #FFF0F5;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        margin: 5px;
+    }
+
+    button:hover {
+        background-color: #A53860;
+        color: #DAB6C4;
+    }
+
+    footer {
+        font-family: Verdana, sans-serif;
+        color: #4A7C59;
+        background-color: #CAE7B9;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .btn-increase {
+        background-color: #DE5D83;
+        color: #FFFFFF; 
+    }
+
+    .btn-decrease {
+        background-color: #C54B8C;
+        color: #FFFFFF; 
+    }
+
+    .btn-delete {
+        background-color: #DC143C;
+        color: #FFFFFF;
+    }
+
+    .btn-increase:hover {
+        background-color: #ACE1AF;
+    }
+    .btn-decrease:hover {
+        background-color: #FADFAD
+    }
+    .btn-delete:hover {
+        background-color: #C51E3A;
+    }
+
+    .btn-edit {
+        background-color: #997A8D;
+        color: #FFFFFF
+    }
+    .btn-edit:hover {
+        background-color: #F2BDCD;
+    }
+
+    .navbar-brand {
+        color: #A53860;
+        font-weight: bold;
+    }
+
+</style>
+```
+Saya juga menambahkan navbar dan beberapa button dengan bootstrap.
+:card_file_box:
+```html
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            {{ app }}
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border: 1px solid #ddd;">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'main:create_product' %}">Create Product</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'main:logout' %}">Logout</a>
+              </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+```
+:radio_button:
+```html
+<!-- Increase and Decrease Buttons with Bootstrap styling -->
+<a href="{% url 'main:increase_amount' item.id %}" class="btn btn-sm btn-increase">+</a>
+<a href="{% url 'main:decrease_amount' item.id %}" class="btn btn-sm btn-decrease">-</a>
+```
+
+Saya juga menambahkan fungsi `edit_item` yang berguna untuk mengedit Item yang sudah ada di MyWardrobe. Saya membuat fungsi ini dalam views.py dalam direktori main.
+```python
+def edit_item(request, id):
+    item = Item.objects.get(pk = id)
+    form = ProductForm(request.POST or None, instance=item)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+    context = {'form': form}
+    return render(request, "edit_item.html", context)
+```
+Saya juga menambahkan pathnya ke urlspattern dengan cara mengimport `edit_item` dan menambahkan path berikut:
+`path('edit-item/<int:id>', edit_item, name='edit_item'),`
 
 

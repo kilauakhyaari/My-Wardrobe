@@ -11,7 +11,7 @@
         background-color: #DAB6C4;
         color: #4A7C59;
         text-align: center;
-        margin: 20px;
+        margin: 20px 0;
     }
 
     h1 {
@@ -28,7 +28,7 @@
     table {
         font-family: Verdana, sans-serif;
         color: #60435F;
-        margin: 0 auto;
+        margin: 20px;
     }
 
     table th {
@@ -42,8 +42,8 @@
         border: 1px solid #A53860;
     }
 
-    a {
-        text-decoration: none;
+    tbody tr:last-child {
+        background-color: #F4C2C2;
     }
 
     button {
@@ -72,40 +72,107 @@
         bottom: 0;
         width: 100%;
         padding: 10px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .btn-increase {
+        background-color: #DE5D83;
+        color: #FFFFFF; 
+    }
+
+    .btn-decrease {
+        background-color: #C54B8C;
+        color: #FFFFFF; 
+    }
+
+    .btn-delete {
+        background-color: #DC143C;
+        color: #FFFFFF;
+    }
+
+    .btn-increase:hover {
+        background-color: #ACE1AF;
+    }
+    .btn-decrease:hover {
+        background-color: #FADFAD
+    }
+    .btn-delete:hover {
+        background-color: #C51E3A;
+    }
+
+    .btn-edit {
+        background-color: #997A8D;
+        color: #FFFFFF
+    }
+    .btn-edit:hover {
+        background-color: #F2BDCD;
+    }
+
+    .navbar-brand {
+        color: #A53860;
+        font-weight: bold;
     }
 
 </style>
 
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            {{ app }}
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border: 1px solid #ddd;">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'main:create_product' %}">Add New Item</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'main:logout' %}">Logout</a>
+              </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
 
 <body>
-    <h1>{{ app }}</h1>
+    </br>
     <p>This will be an app that manages the clothes in {{ app }}</p>
 
     <table>
-        <tr>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Increase/Decrease</th> 
-            <th>Description</th>
-            <th>In Laundry?</th>
-            <th>Delete</th> 
-        </tr>
-        {% for item in items %}
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Increase/Decrease</th> 
+                <th>Description</th>
+                <th>In Laundry?</th>
+                <th>Delete</th> 
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
             <tr>
                 <td>{{ item.name }}</td>
                 <td>{{ item.amount }}</td>
                 <td>
-                    <!-- Increase and Decrease Buttons -->
-                    <a href="{% url 'main:increase_amount' item.id %}">+</a>
-                    <a href="{% url 'main:decrease_amount' item.id %}">-</a>
+                    <!-- Increase and Decrease Buttons with Bootstrap styling -->
+                    <a href="{% url 'main:increase_amount' item.id %}" class="btn btn-sm btn-increase">+</a>
+                    <a href="{% url 'main:decrease_amount' item.id %}" class="btn btn-sm btn-decrease">-</a>
                 </td>
                 <td>{{ item.description }}</td>
                 <td>{{ item.in_laundry }}</td>
-                <!-- Delete Button -->
-                <td><a href="{% url 'main:delete_item' item.id %}">Delete</a></td>
+                <td><a href="{% url 'main:delete_item' item.id %}" class="btn btn-sm btn-delete">Delete</a></td>
+                <td><a href="{% url 'main:edit_item' item.pk %}" class="btn btn-sm btn-edit">Edit</a></td>
             </tr>
-        {% endfor %}
+            {% endfor %}
+        </tbody>
     </table>
+    
 
     <br/>
 
@@ -114,18 +181,13 @@
     </a>
 
     <br/>
-
-    <a href="{% url 'main:logout' %}">
-        <button>Logout</button>
-    </a>
-
     <br/>
 
     <h5>Last entered MyWardrobe: {{ last_login }}</h5>
 </body>
 
 <footer>
-    <h5>Made by:</h5>
+    <h5>This is</h5>
     <p>{{ name }}'s Wardrobe</p>
 </footer>
 {% endblock content %}
