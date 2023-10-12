@@ -1,6 +1,6 @@
 from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from main.forms import ProductForm
 from django.urls import reverse
 from django.core import serializers
@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 
 @login_required(login_url='/login')
@@ -98,14 +99,14 @@ def increase_amount(request, item_id):
     item = get_object_or_404(Item, pk=item_id, user=request.user)
     item.amount += 1
     item.save()
-    return HttpResponseRedirect(reverse('main:show_main'))
+    return JsonResponse({'amount': item.amount})
 
 def decrease_amount(request, item_id):
     item = get_object_or_404(Item, pk=item_id, user=request.user)
     if item.amount > 0:  
         item.amount -= 1
         item.save()
-    return HttpResponseRedirect(reverse('main:show_main'))
+    return JsonResponse({'amount': item.amount})
 
 def delete_item(request, item_id):
     item = get_object_or_404(Item, pk=item_id, user=request.user)
@@ -121,3 +122,33 @@ def edit_item(request, id):
         return HttpResponseRedirect(reverse('main:show_main'))
     context = {'form': form}
     return render(request, "edit_item.html", context)
+
+def get_item_json(request):
+    if not request.user.is_authenticated:
+        return JsonResponse([], safe=False) 
+
+    items = Item.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', items))
+
+@csrf_exempt
+def add_item_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        amount = request.POST.get("amount")
+        description = request.POST.get("description")
+        in_laundry = request.POST.get("in_laundry") == "on"
+        user = request.user
+
+        new_item = Item(name=name, amount=amount, description=description, in_laundry=in_laundry, user=user)
+        new_item.save()
+
+        data = {
+            'id': new_item.pk,
+            'name': new_item.name,
+            'amount': new_item.amount,
+            'description': new_item.description,
+            'in_laundry': new_item.in_laundry
+        }
+        return JsonResponse(data)
+
+    return HttpResponseNotFound()

@@ -7,3 +7,4 @@ class Item(models.Model):
     description = models.TextField() # untuk warna dan bahan 
     in_laundry = models.BooleanField(default=False) # menandakan jika sedang di laundry atau tidak
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)

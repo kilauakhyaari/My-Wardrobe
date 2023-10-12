@@ -723,3 +723,203 @@ Saya juga menambahkan pathnya ke urlspattern dengan cara mengimport `edit_item` 
 `path('edit-item/<int:id>', edit_item, name='edit_item'),`
 
 
+# Tugas :six:
+*Step by Step*
+
+Saya mengubah tabel saya agar mengimplementasikan cards. Lalu, untuk mengambil item saya menggunakan AJAX GET.
+Berikut kode yang saya modifikasi:
+`<table id="product_table"></table>` -> `<div id="item_cards"></div>`
+
+Saya juga menambahkan _script_ pada `main.html` untuk menerapkan AJAX GET, untuk mengambil dan mengirim data ke server tanpa perlu memuat ulang satu halaman penuh seperti ini:
+```javascript
+<script>
+    async function getItems() {
+        return fetch("{% url 'main:get_item_json' %}")
+            .then((res) => res.json());
+    }
+    
+    async function refreshItems() {
+        document.getElementById("item_cards").innerHTML = "";
+        
+        const items = await getItems();
+        let htmlString = "";
+        
+        items.forEach((item) => {
+            const increaseUrl = `{% url 'main:increase_amount' 999999 %}`.replace('999999', item.pk);
+            const decreaseUrl = `{% url 'main:decrease_amount' 999999 %}`.replace('999999', item.pk);
+            const deleteUrl = "{% url 'main:delete_item' 999999 %}".replace('999999', item.pk);
+            const editUrl = "{% url 'main:edit_item' 999999 %}".replace('999999', item.pk);
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = new Date(item.fields.date_added).toLocaleDateString(undefined, dateOptions);
+
+            
+            htmlString += `
+            <div class="card">
+                <!-- You can add an image here if you have one -->
+                <div class="card-body">
+                    <h3 class="card-title">${item.fields.name}</h3>
+                    <p class="card-text amount-display">Amount: ${item.fields.amount}</p>
+                    <p class="card-text">${item.fields.description}</p>
+                    <p class="card-text">In Laundry? ${item.fields.in_laundry}</p>
+                    <button data-id="${item.pk}" class="btn btn-sm btn-increase">+</button>
+                    <button data-id="${item.pk}" class="btn btn-sm btn-decrease">-</button>
+                    <br>
+                    <a href="${editUrl}" class="btn btn-sm btn-edit">Edit</a>
+                    <a href="${deleteUrl}" class="btn btn-sm btn-delete">Delete</a>
+                </div>
+                <div class="card-footer text-muted">
+                    Last Added: ${formattedDate}
+                </div>
+            </div>`;
+        });
+        
+        document.getElementById("item_cards").innerHTML = htmlString;
+    }    
+</script>
+```
+
+Tidak lupa saya menambahkan path ke `urls.py` di main seperti ini:
+```python
+    path('get-item/', get_item_json, name='get_item_json'),
+```
+
+Implementasi AJAX Post saya terapkan untuk menambahkan item. pada `views.py` saya menambahkan fungsi ini:
+```python
+@csrf_exempt
+def add_item_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        amount = request.POST.get("amount")
+        description = request.POST.get("description")
+        in_laundry = request.POST.get("in_laundry") == "on"
+        user = request.user
+
+        new_item = Item(name=name, amount=amount, description=description, in_laundry=in_laundry, user=user)
+        new_item.save()
+
+        data = {
+            'id': new_item.pk,
+            'name': new_item.name,
+            'amount': new_item.amount,
+            'description': new_item.description,
+            'in_laundry': new_item.in_laundry
+        }
+        return JsonResponse(data)
+
+    return HttpResponseNotFound()
+```
+
+Lalu pada front-end, pada `main.html` saya menambahkan _script_ berikut:
+```javascript
+function addItem() {
+        fetch("{% url 'main:add_item_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#addItemForm'))
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to add item. Server responded with status: ' + response.status);
+            }
+        })
+        .then(item => {
+            const increaseUrl = `{% url 'main:increase_amount' 999999 %}`.replace('999999', item.id);
+            const decreaseUrl = `{% url 'main:decrease_amount' 999999 %}`.replace('999999', item.id);
+            const deleteUrl = "{% url 'main:delete_item' 999999 %}".replace('999999', item.id);
+            const editUrl = "{% url 'main:edit_item' 999999 %}".replace('999999', item.id);
+    
+            const newCard = `
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">${item.name}</h5>
+                    <p class="card-text amount-display">Amount: ${item.amount}</p>
+                    <p class="card-text">${item.description}</p>
+                    <p class="card-text">In Laundry? ${item.in_laundry}</p>
+                    <button data-id="${item.id}" class="btn btn-sm btn-increase">+</button>
+                    <button data-id="${item.id}" class="btn btn-sm btn-decrease">-</button>
+                    <br>
+                    <a href="${editUrl}" class="btn btn-sm btn-edit">Edit</a>
+                    <a href="${deleteUrl}" class="btn btn-sm btn-delete">Delete</a>
+                </div>
+            </div>`;
+    
+            document.getElementById("item_cards").insertAdjacentHTML('beforeend', newCard);
+            // Close the modal
+            $("#itemModal").modal('hide');
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    
+        document.getElementById("addItemForm").reset();
+        return false;
+    }
+    document.getElementById("button_add_item").onclick = addItem;
+```
+Tidak lupa saya menambahkan path ke `urls.py` di main seperti ini:
+```python
+    path('create-item-ajax/', add_item_ajax, name='add_item_ajax'),
+```
+Pengimplementasian AJAX Post ini mengirimkan POST request ke server dengan data dari addItemForm untuk menambahkan item baru. Respons server kemudian digunakan untuk menambahkan kartu baru untuk item tersebut ke halaman.
+
+Semua implementasi fungsi-fungsi get dan post di atas menggunakan AJAX untuk berkomunikasi dengan server agar memungkinkan pengalaman pengguna yang dinamis dan lancar tanpa perlu memuat ulang halaman penuh.
+
+Penerapan `collectstatic` saya lakukan dengan mengubah `settings.py` agar memuat kode berikut:
+```py
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+```
+Lalu, saya menjalankan `python manage.py collectstatic` pada terminal. 
+`STATIC_URL` digunakan untuk menentukan bagaimana URL untuk file statis dibuat di template.
+`STATIC_ROOT` digunakan untuk menentukan di mana semua file statis dikumpulkan ketika menjalankan perintah `collectstatic`. Hal ini sangat berguna untuk deployment.
+
+## Pertanyaan :grey_question:
+### 1. Jelaskan perbedaan antara asynchronous programming dengan synchronous programming.
+*Synchronous Programming (Pemrograman Sinkron)*
+Kode dijalankan langkah demi langkah. Satu tugas harus selesai sebelum tugas berikutnya dimulai. 
+- Kelebihan: Mudah untuk dipahami dan didebug karena alur eksekusinya linear.
+- Kekurangan: Bisa menjadi tidak efisien. Jika satu tugas membutuhkan waktu lama, maka seluruh program akan menunggu hingga tugas tersebut selesai.
+
+*Asynchronous Programming (Pemrograman Asinkron)*
+Beberapa tugas bisa dimulai dan dijalankan secara bersamaan tanpa menunggu tugas sebelumnya selesai.
+- Kelebihan: Lebih efisien untuk operasi yang membutuhkan waktu lama, seperti I/O atau permintaan jaringan, karena program bisa melanjutkan pekerjaan lain sambil menunggu.
+- Kekurangan: Lebih kompleks untuk dipahami dan didebug karena tugas-tugas bisa berjalan dalam urutan apa pun dan bisa menyelesaikan kapan saja.
+
+_Synchronous Programming_ bagus untuk alur kerja yang sederhana dan linear, sedangkan _Asynchronous Programming_ ideal untuk tugas yang memerlukan banyak waktu atau untuk aplikasi yang perlu responsif dan cepat.
+
+### 2. Dalam penerapan JavaScript dan AJAX, terdapat penerapan paradigma event-driven programming. Jelaskan maksud dari paradigma tersebut dan sebutkan salah satu contoh penerapannya pada tugas ini.
+Paradigma *event-driven programming* adalah pendekatan pemrograman di mana alur eksekusi program ditentukan oleh urutan kejadian (events) seperti input pengguna, sensor output, atau pesan dari program lain. Program event-driven dirancang untuk bereaksi terhadap kejadian tertentu.
+Penerapan pada tugas saya:
+```javascript
+document.addEventListener('click', async function(e) {
+    if (e.target && e.target.classList.contains('btn-increase')) {
+        ...
+    } else if (e.target && e.target.classList.contains('btn-decrease')) {
+        ...
+    }
+});
+```
+Saya menggunakan _event-driven programming_ untuk menangani kejadian klik pada dokumen.
+
+### 3. Jelaskan penerapan asynchronous programming pada AJAX.
+Dalam konteks AJAX, asynchronous programming memungkinkan halaman web untuk meminta data dari server dan memperbarui bagian dari halaman tanpa harus memuat ulang halaman secara keseluruhan.
+Penerapan _asynchronous programming_ dalam AJAX:
+- Permintaan Asinkron: 
+    Ketika sebuah permintaan AJAX dikirim, browser tidak perlu menunggu respons dari server untuk melanjutkan eksekusi kode lain. Ini berarti bahwa pengguna dapat terus berinteraksi dengan halaman sementara permintaan sedang diproses.
+- Callback: 
+    Setelah permintaan AJAX selesai (baik berhasil, gagal, atau timeout), sebuah fungsi callback dapat dipanggil. Fungsi ini mendefinisikan apa yang harus dilakukan setelah mendapatkan respons dari server. Dalam JavaScript modern, pendekatan seperti Promises dan async/await sering digunakan sebagai alternatif untuk callback tradisional, memberikan cara yang lebih bersih dan mudah dibaca untuk menangani operasi asinkron.
+- Pembaruan Halaman: 
+    Setelah mendapatkan respons dari server, halaman web dapat diperbarui secara dinamis tanpa perlu memuat ulang. Ini memungkinkan untuk pengalaman pengguna yang lebih cepat dan responsif.
+
+### 4. Pada PBP kali ini, penerapan AJAX dilakukan dengan menggunakan Fetch API daripada library jQuery. Bandingkanlah kedua teknologi tersebut dan tuliskan pendapat kamu teknologi manakah yang lebih baik untuk digunakan.
+*Fetch API*
+Fetch API adalah API asli yang ada di sebagian besar browser modern. Ini berarti Anda tidak perlu mengimpor library eksternal untuk menggunakannya. Fetch API menggunakan Promises, yang memungkinkan penanganan respons yang lebih bersih dan lebih mudah dibaca, terutama saat digunakan dengan async/await. Fetch API memberikan kontrol lebih atas permintaan, seperti memungkinkan manual pengaturan headers, mode, dan credentials. Beberapa pengembang mungkin merasa bahwa Fetch memiliki sintaks yang lebih intuitif dan modern dibandingkan dengan jQuery AJAX.
+
+*jQuery AJAX*
+Salah satu keuntungan utama menggunakan jQuery adalah kompatibilitas lintas browser. Meskipun browser modern mendukung Fetch API, browser lama mungkin tidak. jQuery menyediakan solusi AJAX yang bekerja di hampir semua browser. Untuk pengembang yang sudah terbiasa dengan jQuery, menggunakan AJAX melalui jQuery mungkin terasa lebih familiar. jQuery tidak hanya menyediakan AJAX, tetapi juga berbagai fitur lain yang memudahkan manipulasi DOM, animasi, dan lainnya. Menggunakan jQuery berarti menambahkan library eksternal ke proyek Anda, yang dapat meningkatkan ukuran total file yang harus diunduh oleh pengguna.
+Untuk proyek-proyek baru yang tidak memerlukan dukungan browser lama, saya cenderung memilih Fetch API karena sifatnya yang native dan integrasinya yang baik dengan fitur JavaScript modern. Namun, keputusan akhir harus didasarkan pada kebutuhan spesifik proyek dan preferensi.
+Jika sedang mengembangkan aplikasi web modern dan ingin mengurangi ketergantungan pada library eksternal, serta memanfaatkan fitur ES6+ seperti Promises dan async/await, maka Fetch API mungkin adalah pilihan yang lebih baik.
+Namun, jika proyek sudah menggunakan jQuery atau memerlukan kompatibilitas lintas browser yang luas, terutama dengan browser lama, maka jQuery AJAX mungkin lebih sesuai.
+
+
